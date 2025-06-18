@@ -1,31 +1,38 @@
-📌 Hakkında
-Bu proje, beyin MR görüntüleri üzerinden demans teşhisine yardımcı olmak amacıyla geliştirilmiş derin öğrenme tabanlı bir görüntü sınıflandırma sistemidir. Özellikle Moderate Demented gibi az temsil edilen sınıflarda veri dengesizliğini gidermek için, DCGAN (Deep Convolutional Generative Adversarial Network) kullanılarak sentetik görüntüler üretilmiştir.
+🧠 Synthetic Data Generation with DCGAN
+One of the key challenges in medical image classification—particularly in dementia staging—is the imbalance and scarcity of data for certain classes. In our case, the Moderate Demented category was significantly underrepresented, making it difficult for convolutional neural networks to learn discriminative features and generalize well across all classes.
 
-Zenginleştirilmiş veri seti, başta VGG19 olmak üzere çeşitli evrişimli sinir ağları (CNN) ile eğitilmiştir. Amaç, MR görüntülerini şu dört klinik kategoriye doğru şekilde ayırabilmektir:
+To address this issue, we implemented a Deep Convolutional Generative Adversarial Network (DCGAN) to generate synthetic brain MRI images. DCGAN consists of two adversarial networks—a generator and a discriminator—that are trained simultaneously. The generator learns to create realistic-looking MRI images from random noise, while the discriminator learns to distinguish between real and fake images. Through iterative training, the generator improves its capability to produce high-fidelity images that mimic the statistical patterns of the original class.
 
-Non Demented
+Key steps in our augmentation process include:
 
-Very Mild Demented
+Data Preparation: The original Moderate Demented images were preprocessed (resized, normalized) and used to train the DCGAN.
 
-Mild Demented
+Training the DCGAN: The generator and discriminator were trained over multiple epochs using binary cross-entropy loss and Adam optimizer. Visual quality of generated samples was monitored throughout.
 
-Moderate Demented
+Synthetic Sample Generation: After training, hundreds of synthetic MRI images were generated for the underrepresented class.
 
-Ayrıca modelin karar mekanizmasını görselleştirmek için Grad-CAM ısı haritaları entegre edilmiştir. Bu sayede, modelin sınıflandırma sırasında odaklandığı beyin bölgeleri yorumlanabilir hale gelmiştir.
+Integration into the Dataset: These generated images were combined with the original dataset, leading to a more balanced training set.
 
-Proje, yapay zekâ destekli tıbbi görüntü analizi ile nörolojide erken teşhis ve karar destek sağlamayı hedefleyen bir akademik araştırma çalışmasıdır.
-This project presents a deep learning-based visual classification system designed to assist in the diagnosis of dementia through brain MRI images. The core idea is to enhance the limited and imbalanced dataset using a DCGAN (Deep Convolutional Generative Adversarial Network) to generate synthetic brain images, especially for underrepresented dementia stages like Moderate Demented.
+Model Retraining: The VGG19 classifier was retrained using this enriched dataset, showing improved accuracy and better sensitivity for minority classes.
 
-The augmented dataset is then used to train various convolutional neural networks (CNNs), with a particular focus on VGG19. The goal is to accurately classify MRI images into four clinical categories:
+This approach not only mitigated the effects of class imbalance but also demonstrated the potential of GANs in enhancing medical datasets without requiring expensive or ethically sensitive real data collection processes.
 
-Non Demented
 
-Very Mild Demented
+🧠 DCGAN ile Sentetik Veri Üretimi
+Tıbbi görüntü sınıflandırmasında, özellikle demans evrelerini ayırt etmede en büyük zorluklardan biri, bazı sınıflar için verinin yetersiz ve dengesiz olmasıdır. Bu çalışmada, Moderate Demented sınıfındaki görüntülerin azlığı, derin öğrenme modellerinin bu evreyi öğrenmesini zorlaştırmıştır.
 
-Mild Demented
+Bu sorunu çözmek için DCGAN (Deep Convolutional Generative Adversarial Network) tabanlı bir sentetik görüntü üretim süreci uygulanmıştır. DCGAN, birbirine karşı çalışan iki sinir ağından oluşur: üreteç (generator) ve ayırt edici (discriminator). Üreteç, rastgele gürültüden gerçekçi beyin MR görüntüleri üretmeye çalışırken; ayırt edici, bu görüntülerin sahte olup olmadığını anlamaya çalışır. Bu rekabetçi yapı sayesinde zamanla gerçeğe oldukça yakın yeni görüntüler üretilmiştir.
 
-Moderate Demented
+Sentetik veri artırımı şu adımlarla gerçekleştirilmiştir:
 
-The system aims to provide a supportive tool for early and stage-specific diagnosis of Alzheimer’s and related cognitive disorders. Grad-CAM visualizations are also integrated to offer interpretable heatmaps, helping experts understand which brain regions the model focuses on during classification.
+Veri Hazırlığı: Orijinal Moderate Demented görüntüleri ön işleme tabi tutuldu (yeniden boyutlandırma, normalizasyon) ve DCGAN eğitimi için kullanıldı.
 
-This project has been developed as part of an academic research initiative, with the goal of contributing to early diagnosis and decision support in neurology using AI-driven medical image analysis.
+DCGAN Eğitimi: Üreteç ve ayırt edici ağlar, Binary Cross-Entropy kaybı ve Adam optimizasyonuyla birçok epoch boyunca eğitildi. Görüntülerin kalitesi düzenli olarak takip edildi.
+
+Sentetik Görüntü Üretimi: Eğitim sonrasında, az temsil edilen sınıf için yüzlerce yeni MR görüntüsü üretildi.
+
+Veri Setine Entegrasyon: Bu görüntüler orijinal veriyle birleştirildi ve eğitim seti dengelendi.
+
+Model Yeniden Eğitimi: Zenginleştirilmiş veri setiyle VGG19 modeli tekrar eğitildi ve özellikle azınlık sınıflarındaki başarı oranı gözle görülür biçimde arttı.
+
+Bu yaklaşım, yalnızca sınıf dengesizliğini azaltmakla kalmamış, aynı zamanda etik veya mali nedenlerle zor elde edilen tıbbi verilerin GAN’lar aracılığıyla üretilebileceğini de göstermiştir.
